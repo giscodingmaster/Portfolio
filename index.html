@@ -13,22 +13,29 @@
 
     <style>
         :root {
+            /* Palette */
             --bg-deep: #f8fafc;
-            --bg-card: #ffffff;
-            --border-glass: #e2e8f0;
-            --accent-primary: #2563eb;
-            --accent-secondary: #0f172a;
-            --accent-highlight: #0d9488;
+            --bg-card: rgba(255, 255, 255, 0.7); /* More translucent */
+            --border-glass: rgba(255, 255, 255, 0.8);
+            --border-highlight: #bae6fd;
+            
+            --accent-primary: #2563eb; /* Royal Blue */
+            --accent-secondary: #0f172a; /* Navy */
+            --accent-teal: #0d9488; /* Teal */
+            
             --text-main: #1e293b;
             --text-muted: #64748b;
+            
             --font-head: 'Space Grotesk', sans-serif;
             --font-body: 'Outfit', sans-serif;
-            --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
-            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.04);
+            --shadow-hover: 0 25px 50px -12px rgba(37, 99, 235, 0.15);
         }
 
         /* --- RESET & BASE --- */
         * { box-sizing: border-box; margin: 0; padding: 0; cursor: default; }
+        html { scroll-behavior: smooth; }
         
         body {
             background-color: var(--bg-deep);
@@ -42,87 +49,174 @@
         ::-webkit-scrollbar-track { background: var(--bg-deep); }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+        ::selection { background: var(--accent-primary); color: #fff; }
 
-        /* --- BACKGROUNDS --- */
+        /* --- ANIMATED BACKGROUNDS --- */
         .topo-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h100v100H0z' fill='%23f8fafc'/%3E%3Cpath d='M10 10c10 20 10 30 20 40s30 10 40-10 10-30-10-40' stroke='%23cbd5e1' stroke-width='0.2' fill='none'/%3E%3Cpath d='M-10 50c20 5 30 20 40 10s20-20 40-10 20 20 10 40' stroke='%23cbd5e1' stroke-width='0.2' fill='none'/%3E%3C/svg%3E");
-            background-size: cover; opacity: 1; z-index: -2; pointer-events: none;
+            background-size: cover; 
+            opacity: 1; z-index: -2; pointer-events: none;
+            animation: driftMap 60s linear infinite alternate;
+        }
+
+        @keyframes driftMap {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
         }
         
+        /* Two Orbs for balance */
         .orb {
-            position: fixed; width: 800px; height: 800px;
-            background: radial-gradient(circle, rgba(37, 99, 235, 0.08), transparent 70%);
-            border-radius: 50%; top: -200px; left: 50%;
-            transform: translate(-50%, 0); filter: blur(60px); z-index: -1;
-            animation: breathe 10s infinite ease-in-out;
+            position: fixed; border-radius: 50%;
+            filter: blur(80px); z-index: -1;
+            opacity: 0.6;
+            animation: floatOrb 10s infinite ease-in-out;
         }
-        @keyframes breathe {
-            0%, 100% { transform: translate(-50%, 0) scale(1); opacity: 0.8; }
-            50% { transform: translate(-50%, 30px) scale(1.1); opacity: 0.5; }
+        .orb-1 {
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.15), transparent 70%);
+            top: -100px; left: 50%; transform: translateX(-50%);
+        }
+        .orb-2 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(13, 148, 136, 0.1), transparent 70%);
+            bottom: -100px; right: -100px;
+            animation-delay: 2s;
+        }
+        
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(-50%, 0) scale(1); }
+            50% { transform: translate(-50%, 20px) scale(1.05); }
         }
 
         /* --- NAV --- */
         nav {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 600px; background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid white; border-radius: 100px; padding: 12px 30px;
+            width: 90%; max-width: 500px; 
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.6);
+            border-radius: 100px; padding: 12px 30px;
             z-index: 1000; display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
+            transition: width 0.3s;
         }
-        .nav-logo { font-family: var(--font-head); font-weight: 700; color: var(--accent-secondary); letter-spacing: -0.5px; }
+        .nav-logo { font-family: var(--font-head); font-weight: 700; color: var(--accent-secondary); letter-spacing: -0.5px; font-size: 1.1rem;}
         .nav-logo span { color: var(--accent-primary); }
-        .nav-links { display: flex; gap: 20px; font-size: 0.85rem; }
-        .nav-links a { text-decoration: none; color: var(--text-muted); transition: 0.3s; cursor: pointer; font-weight: 500; }
+        .nav-links { display: flex; gap: 25px; font-size: 0.85rem; }
+        .nav-links a { text-decoration: none; color: var(--text-muted); transition: 0.3s; cursor: pointer; font-weight: 500; position: relative; }
         .nav-links a:hover { color: var(--accent-primary); }
+        
+        /* Small dot under active/hover link */
+        .nav-links a::after {
+            content: ''; position: absolute; width: 4px; height: 4px;
+            background: var(--accent-primary); bottom: -4px; left: 50%; transform: translateX(-50%) scale(0);
+            border-radius: 50%; transition: 0.3s;
+        }
+        .nav-links a:hover::after { transform: translateX(-50%) scale(1); }
 
         /* --- HERO --- */
         .hero {
-            min-height: 90vh; display: flex; flex-direction: column;
+            min-height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
             padding: 0 2rem; position: relative;
         }
         .est-pill {
-            padding: 6px 16px; border: 1px solid var(--accent-primary); color: var(--accent-primary);
-            border-radius: 50px; font-size: 0.8rem; font-weight: 600; margin-bottom: 2rem;
-            text-transform: uppercase; letter-spacing: 2px; background: rgba(37, 99, 235, 0.05);
+            padding: 6px 18px; border: 1px solid rgba(37, 99, 235, 0.3); color: var(--accent-primary);
+            border-radius: 50px; font-size: 0.75rem; font-weight: 700; margin-bottom: 2rem;
+            text-transform: uppercase; letter-spacing: 2px; background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 10px -2px rgba(37, 99, 235, 0.1);
         }
         .hero h1 {
-            font-family: var(--font-head); font-size: clamp(3rem, 8vw, 6rem); line-height: 1; font-weight: 700;
-            background: linear-gradient(180deg, #1e293b, #475569); -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; letter-spacing: -2px;
+            font-family: var(--font-head); font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.1; font-weight: 700;
+            background: linear-gradient(135deg, #1e293b 0%, #475569 100%); 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem; letter-spacing: -2px;
         }
-        .hero p { max-width: 600px; color: var(--text-muted); font-size: 1.2rem; margin-bottom: 3rem; font-weight: 400; }
+        .hero p { max-width: 550px; color: var(--text-muted); font-size: 1.15rem; margin-bottom: 3rem; font-weight: 400; line-height: 1.8; }
+        
         .coordinates {
-            position: absolute; bottom: 40px; right: 40px; font-family: monospace;
-            color: var(--accent-primary); font-size: 0.8rem; background: rgba(255,255,255,0.8);
-            padding: 5px 10px; border-radius: 5px; border: 1px solid var(--border-glass);
+            position: absolute; bottom: 40px; right: 40px; font-family: 'Space Grotesk', monospace;
+            color: var(--accent-primary); font-size: 0.8rem; background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(5px);
+            padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border-glass);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        /* --- CARDS & IMAGE SLIDESHOW --- */
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
+        /* Scroll Mouse Animation */
+        .scroll-indicator {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            width: 26px; height: 40px; border: 2px solid var(--text-muted);
+            border-radius: 20px; opacity: 0.5;
+        }
+        .scroll-indicator::before {
+            content: ''; position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+            width: 4px; height: 6px; background: var(--text-muted); border-radius: 2px;
+            animation: scrollWheel 2s infinite;
+        }
+        @keyframes scrollWheel {
+            0% { top: 6px; opacity: 1; }
+            100% { top: 20px; opacity: 0; }
+        }
+
+        /* --- LAYOUT & SECTIONS --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 6rem 2rem; }
+        
+        /* Centered Headers */
+        .section-head { 
+            margin-bottom: 4.5rem; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            text-align: center;
+        }
+        .section-head h2 { 
+            font-family: var(--font-head); 
+            font-size: 2.8rem; 
+            color: var(--accent-secondary); 
+            margin-bottom: 0.5rem;
+        }
+        .section-head::after { 
+            content: ''; display: block; width: 60px; height: 4px; 
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-teal)); 
+            margin-top: 15px; border-radius: 2px; 
+        }
+
+        /* --- CARD SYSTEMS --- */
+        .grid-3 { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 2.5rem; 
+        }
 
         .glass-card {
-            background: var(--bg-card); border: 1px solid var(--border-glass);
+            background: var(--bg-card); 
+            border: 1px solid white;
             border-radius: 24px; overflow: hidden; position: relative;
-            transition: all 0.3s ease-out; transform-style: preserve-3d;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            transform-style: preserve-3d;
             box-shadow: var(--shadow-card);
+            backdrop-filter: blur(10px);
         }
-        .glass-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-5px); border-color: #bfdbfe; }
+        .glass-card:hover { 
+            box-shadow: var(--shadow-hover); 
+            transform: translateY(-8px); 
+            border-color: var(--border-highlight);
+        }
 
+        /* Image Slideshow Styles */
         .card-img-container {
-            height: 200px; width: 100%;
+            height: 220px; width: 100%;
             position: relative; overflow: hidden;
-            background: #e2e8f0; 
+            background: #f1f5f9; 
         }
 
         .card-img-slide {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover;
             opacity: 0;
-            transform: scale(1.0);
-            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), transform 6s ease;
+            transform: scale(1.05);
+            transition: opacity 1.2s ease-in-out, transform 8s ease;
             z-index: 1;
         }
         
@@ -132,57 +226,115 @@
             z-index: 2;
         }
 
-        .card-body { padding: 2rem; transform: translateZ(20px); background: #fff; position: relative; z-index: 10; }
-        .card-icon { color: var(--accent-primary); margin-bottom: 1rem; }
-        .card-title { font-family: var(--font-head); font-size: 1.5rem; color: var(--accent-secondary); margin-bottom: 0.5rem; }
-        .card-text { color: var(--text-muted); font-size: 0.95rem; }
-
-        /* --- FEATURED CARD --- */
-        .feat-card {
-            grid-column: 1 / -1; display: grid; grid-template-columns: 1.2fr 1fr;
-            background: white; border: 1px solid var(--border-glass);
+        .card-body { 
+            padding: 2.5rem; 
+            background: linear-gradient(180deg, rgba(255,255,255,0.9), #fff); 
+            position: relative; z-index: 10; 
+            height: 100%;
         }
-        @media (max-width: 768px) { .feat-card { grid-template-columns: 1fr; } }
-        .feat-img { height: 100%; min-height: 350px; }
-        .feat-content { padding: 3rem; display: flex; flex-direction: column; justify-content: center; }
-        .feat-badge { color: var(--accent-primary); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
-        .project-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.5rem; }
-        .pill { background: #f1f5f9; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; border: 1px solid var(--border-glass); transition: 0.3s; color: var(--text-muted); font-weight: 500; }
-        .pill:hover { border-color: var(--accent-primary); color: var(--accent-primary); background: #eff6ff; }
+        .card-icon { color: var(--accent-primary); margin-bottom: 1.2rem; }
+        .card-title { font-family: var(--font-head); font-size: 1.4rem; color: var(--accent-secondary); margin-bottom: 0.8rem; }
+        .card-text { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
 
-        /* --- TECH STACK --- */
-        .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
-        .tech-item { background: white; border: 1px solid var(--border-glass); padding: 1.5rem; text-align: center; border-radius: 12px; transition: 0.3s; box-shadow: var(--shadow-card); }
-        .tech-item:hover { background: #eff6ff; border-color: var(--accent-primary); transform: translateY(-5px); }
-        .tech-name { font-weight: 600; font-size: 0.9rem; color: var(--text-main); margin-top: 0.5rem; }
+        /* --- FEATURED PROJECT --- */
+        .feat-card {
+            grid-column: 1 / -1; 
+            display: grid; 
+            grid-template-columns: 1.3fr 1fr;
+            background: white; 
+            border: 1px solid white;
+            min-height: 450px;
+        }
+        /* Mobile Stack Fix */
+        @media (max-width: 850px) { .feat-card { grid-template-columns: 1fr; } .feat-img { min-height: 300px; } }
+        
+        .feat-img { height: 100%; width: 100%; }
+        
+        .feat-content { 
+            padding: 4rem; 
+            display: flex; flex-direction: column; justify-content: center; 
+        }
+        .feat-badge { 
+            color: var(--accent-primary); font-weight: 700; text-transform: uppercase; 
+            letter-spacing: 1.5px; font-size: 0.75rem; margin-bottom: 1.5rem; 
+            display: flex; align-items: center; gap: 8px;
+        }
+        .project-list { 
+            display: flex; flex-wrap: wrap; gap: 10px; margin-top: 2rem; 
+        }
+        .pill { 
+            background: #f8fafc; padding: 8px 16px; border-radius: 8px; 
+            font-size: 0.8rem; border: 1px solid #e2e8f0; 
+            transition: 0.3s; color: var(--text-muted); font-weight: 600; 
+        }
+        .pill:hover { 
+            border-color: var(--accent-primary); color: var(--accent-primary); 
+            background: #eff6ff; transform: translateY(-2px);
+        }
 
-        /* --- STATS --- */
+        /* --- TECH STACK (CENTERED) --- */
+        .tech-grid { 
+            display: flex; 
+            flex-wrap: wrap;
+            justify-content: center; /* Centering Alignment */
+            gap: 1.5rem; 
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .tech-item { 
+            background: white; border: 1px solid white; 
+            padding: 1.8rem; text-align: center; border-radius: 16px; 
+            transition: 0.3s; box-shadow: var(--shadow-card); 
+            width: 160px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .tech-item:hover { 
+            background: #fff; border-color: var(--border-highlight); 
+            transform: translateY(-8px); 
+            box-shadow: var(--shadow-hover);
+        }
+        .tech-name { font-weight: 600; font-size: 0.9rem; color: var(--text-main); margin-top: 0.8rem; }
+
+        /* --- STATS (CENTERED) --- */
         .stats-section {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
             border-top: 1px solid var(--border-glass); border-bottom: 1px solid var(--border-glass);
-            padding: 4rem 0; margin-top: 4rem;
+            padding: 5rem 0; margin-top: 6rem;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
         }
-        @media (max-width: 768px) { .stats-section { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .stats-section { grid-template-columns: repeat(2, 1fr); gap: 3rem; } }
+        
         .stat-box { text-align: center; }
         .stat-num {
-            font-family: var(--font-head); font-size: 3.5rem; font-weight: 700; color: var(--bg-deep);
+            font-family: var(--font-head); font-size: 4rem; font-weight: 700; color: rgba(15, 23, 42, 0.05);
             -webkit-text-stroke: 1px #cbd5e1; position: relative; display: inline-block;
+            line-height: 1;
         }
         .stat-num.filled { color: var(--accent-secondary); -webkit-text-stroke: 0; }
-        .stat-label { display: block; margin-top: 0.5rem; font-size: 0.9rem; letter-spacing: 1px; color: var(--accent-primary); text-transform: uppercase; font-weight: 600; }
+        .stat-label { 
+            display: block; margin-top: 1rem; font-size: 0.85rem; 
+            letter-spacing: 2px; color: var(--accent-primary); 
+            text-transform: uppercase; font-weight: 700; 
+        }
 
         /* --- FOOTER --- */
-        footer { text-align: center; padding: 4rem 2rem; color: #fff; font-size: 0.9rem; background: #0f172a; }
+        footer { 
+            text-align: center; padding: 4rem 2rem; 
+            color: #94a3b8; font-size: 0.9rem; 
+            background: #0f172a; border-top: 4px solid var(--accent-primary);
+        }
 
-        /* --- ANIMATIONS --- */
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+        /* --- ANIMATION UTILS --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
 
+    <!-- Ambient Backgrounds -->
     <div class="topo-bg"></div>
-    <div class="orb"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
 
     <nav>
         <div class="nav-logo">SURVEY <span>&</span> MAPS</div>
@@ -196,12 +348,18 @@
     <section class="hero">
         <div class="est-pill reveal">Est. 1981</div>
         <h1 class="reveal" style="transition-delay: 100ms;">Survey & Maps Department<br></h1>
-        <p class="reveal" style="transition-delay: 200ms;">Professional surveying and geospatial solutions supporting planning, construction, As-built and asset management.</p>
+        <p class="reveal" style="transition-delay: 200ms;">Professional surveying and geospatial solutions supporting planning, construction, and asset management across the nation.</p>
+        
+        <!-- Interactive Coordinates -->
         <div class="coordinates" id="coords">30.0444° N, 31.2357° E</div>
+        
+        <!-- Scroll Prompt -->
+        <div class="scroll-indicator reveal" style="transition-delay: 400ms;"></div>
     </section>
 
     <div class="container">
 
+        <!-- SERVICES -->
         <div class="section-head reveal" id="services">
             <h2>Core Competencies</h2>
         </div>
@@ -213,7 +371,7 @@
                 <div class="card-body">
                     <i data-lucide="map" class="card-icon"></i>
                     <h3 class="card-title">Land Surveying</h3>
-                    <p class="card-text">High-precision topographic mapping using GNSS RTK and Motorized Total Stations for detailed development planning.</p>
+                    <p class="card-text">High-precision topographic mapping using GNSS RTK and Robotic Total Stations for detailed development planning.</p>
                 </div>
             </div>
 
@@ -238,7 +396,7 @@
             </div>
             
             <!-- BOUNDARY & CADASTRAL -->
-            <div class="glass-card reveal tilt-card">
+            <div class="glass-card reveal tilt-card" style="transition-delay: 300ms;">
                 <div class="card-img-container" id="card-boundary"></div>
                 <div class="card-body">
                     <i data-lucide="maximize" class="card-icon"></i>
@@ -248,19 +406,19 @@
             </div>
         </div>
 
-        <br><br><br>
+        <br><br><br><br>
 
+        <!-- FEATURED PROJECT -->
         <div class="section-head reveal" id="projects">
             <h2>Major Deployments</h2>
         </div>
 
-        <!-- GAS NETWORK EXPANSION -->
         <div class="glass-card feat-card reveal tilt-card">
             <div class="card-img-container feat-img" id="feat-gas"></div>
             <div class="feat-content">
-                <div class="feat-badge"><i data-lucide="flame" size="16"></i>Energy</div>
-                <h3 class="card-title" style="font-size: 2rem;">Gas Network Expansion</h3>
-                <p class="card-text" style="margin-top: 1rem;">Comprehensive surveying and staking for national energy networks. Delivering critical data for the Administrative Capital, Military Entity, and the Decent Life initiative.</p>
+                <div class="feat-badge"><i data-lucide="flame" size="16"></i>National Infrastructure</div>
+                <h3 class="card-title" style="font-size: 2.2rem; margin-bottom: 1.5rem;">Gas Network Expansion</h3>
+                <p class="card-text">Comprehensive surveying and staking for national energy networks. Delivering critical data for the Administrative Capital, Military Entity, and the Decent Life initiative.</p>
                 
                 <div class="project-list">
                     <span class="pill">Gharbia</span>
@@ -273,21 +431,23 @@
             </div>
         </div>
 
-        <br><br><br>
+        <br><br><br><br>
 
+        <!-- TECH STACK -->
         <div class="section-head reveal" id="tech">
             <h2>Tech & Equipment</h2>
         </div>
 
         <div class="tech-grid">
-            <div class="tech-item reveal"><i data-lucide="satellite" color="#2563eb"></i><div class="tech-name">GNSS RTK</div></div>
-            <div class="tech-item reveal" style="transition-delay: 50ms;"><i data-lucide="camera" color="#0f172a"></i><div class="tech-name">Motorized Total Station</div></div>
-            <div class="tech-item reveal" style="transition-delay: 100ms;"><i data-lucide="layers" color="#0d9488"></i><div class="tech-name">ArcGIS Pro</div></div>
-            <div class="tech-item reveal" style="transition-delay: 150ms;"><i data-lucide="pen-tool" color="#2563eb"></i><div class="tech-name">Civil 3D</div></div>
-            <div class="tech-item reveal" style="transition-delay: 200ms;"><i data-lucide="map-pin" color="#0f172a"></i><div class="tech-name">Autocad</div></div>
-            <div class="tech-item reveal" style="transition-delay: 250ms;"><i data-lucide="box" color="#0d9488"></i><div class="tech-name">Leica Geo Office</div></div>
+            <div class="tech-item reveal"><i data-lucide="satellite" color="#2563eb" size="32"></i><div class="tech-name">GNSS RTK</div></div>
+            <div class="tech-item reveal" style="transition-delay: 50ms;"><i data-lucide="camera" color="#0f172a" size="32"></i><div class="tech-name">Robotic Stations</div></div>
+            <div class="tech-item reveal" style="transition-delay: 100ms;"><i data-lucide="layers" color="#0d9488" size="32"></i><div class="tech-name">ArcGIS Pro</div></div>
+            <div class="tech-item reveal" style="transition-delay: 150ms;"><i data-lucide="pen-tool" color="#2563eb" size="32"></i><div class="tech-name">Civil 3D</div></div>
+            <div class="tech-item reveal" style="transition-delay: 200ms;"><i data-lucide="map-pin" color="#0f172a" size="32"></i><div class="tech-name">Autocad</div></div>
+            <div class="tech-item reveal" style="transition-delay: 250ms;"><i data-lucide="box" color="#0d9488" size="32"></i><div class="tech-name">Leica Geo Office</div></div>
         </div>
 
+        <!-- STATS -->
         <div class="stats-section reveal">
             <div class="stat-box">
                 <div class="stat-num" data-target="43">0</div>
@@ -314,37 +474,37 @@
     </footer>
 
     <script>
-        // --- CONFIGURATION: IMAGE DATA ---
-        // Using Direct Links (i.ibb.co)
+        // --- DATA CONFIGURATION ---
+        // Using the supplied direct links (i.ibb.co)
         const portfolioData = {
-            'card-survey': [ // Land Surveying
+            'card-survey': [ 
                 'https://i.ibb.co/v4CJGNb6/Whats-App-Image-2026-01-15-at-8-54-40-AM-1.jpg',
                 'https://i.ibb.co/1GkmGr67/Screenshot-2026-01-15-101425.png',
                 'https://i.ibb.co/YgJ7vhN/Whats-App-Image-2026-01-15-at-8-56-09-AM.jpg'
             ],
-            'card-gis': [ // GIS Mapping
+            'card-gis': [
                 'https://i.ibb.co/hxjShQn9/1691605191513.jpg',
                 'https://i.ibb.co/RTnDV8DK/1691605191554.jpg',
                 'https://i.ibb.co/LDsqVBz1/1691690363436.jpg',
                 'https://i.ibb.co/7tSysdgQ/1691605191496.jpg'
             ],
-            'card-construction': [ // Construction Staking (Placeholder - None provided)
+            'card-construction': [ 
                 'https://images.pexels.com/photos/159306/construction-site-build-construction-work-159306.jpeg?auto=compress&cs=tinysrgb&w=800',
                 'https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=800'
             ],
-            'card-boundary': [ // Boundary & Cadastral
+            'card-boundary': [
                 'https://i.ibb.co/rRqXJ8fw/1691690359444.jpg',
                 'https://i.ibb.co/7tSysdgQ/1691605191496.jpg',
                 'https://i.ibb.co/ksvjq6Sn/1691605191474.jpg'
             ],
-            'feat-gas': [ // Gas Network Expansion
+            'feat-gas': [
                 'https://i.ibb.co/JjzxWbwh/Whats-App-Image-2026-01-15-at-10-06-59-AM.jpg',
                 'https://i.ibb.co/mCwKFpSJ/Whats-App-Image-2026-01-15-at-10-07-31-AM.jpg',
                 'https://i.ibb.co/gZ0YB0K5/Whats-App-Image-2026-01-15-at-10-08-09-AM.jpg'
             ]
         };
 
-        // --- IMAGE ROTATOR LOGIC ---
+        // --- ENGINE: IMAGE SLIDESHOW ---
         function initImageRotators() {
             Object.keys(portfolioData).forEach(containerId => {
                 const container = document.getElementById(containerId);
@@ -352,25 +512,21 @@
                 
                 if (!container || images.length === 0) return;
 
-                // Create IMG elements
                 images.forEach((url, index) => {
                     const img = document.createElement('img');
                     img.src = url;
-                    img.alt = "Project Image";
+                    img.alt = "Department Project";
                     img.classList.add('card-img-slide');
                     if (index === 0) img.classList.add('active'); 
                     
-                    img.onerror = function() {
-                        console.warn('Image failed to load:', url);
-                    };
-
+                    img.onerror = function() { console.warn('Image load error:', url); };
                     container.appendChild(img);
                 });
 
-                // Start rotation if > 1 image
                 if (images.length > 1) {
                     let currentIndex = 0;
                     const imgElements = container.querySelectorAll('.card-img-slide');
+                    // Randomized speed for organic feel (3.5s - 5.5s)
                     const speed = 3500 + Math.random() * 2000; 
                     
                     setInterval(() => {
@@ -381,28 +537,31 @@
                 }
             });
         }
-
         initImageRotators();
 
-        // --- SITE UTILITIES ---
+        // --- UTILS & ANIMATIONS ---
         lucide.createIcons();
 
+        // Scroll Reveal
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('active');
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.15 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        // Coordinate Tracker
         const coords = document.getElementById('coords');
         document.addEventListener('mousemove', (e) => {
             const x = (e.clientX / window.innerWidth) * 100;
             const y = (e.clientY / window.innerHeight) * 100;
-            const lat = (30 + (y/1000)).toFixed(4);
-            const lng = (31 + (x/1000)).toFixed(4);
+            // Simulated local grid adjustment
+            const lat = (30.0444 + (y/5000)).toFixed(4);
+            const lng = (31.2357 + (x/5000)).toFixed(4);
             coords.innerText = `${lat}° N, ${lng}° E`;
         });
 
+        // 3D Tilt Effect
         const cards = document.querySelectorAll('.tilt-card');
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -411,8 +570,9 @@
                 const y = e.clientY - rect.top;
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -5;
-                const rotateY = ((x - centerX) / centerX) * 5;
+                // Subtle rotation
+                const rotateX = ((y - centerY) / centerY) * -4;
+                const rotateY = ((x - centerX) / centerX) * 4;
                 card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
             });
             card.addEventListener('mouseleave', () => {
@@ -420,6 +580,7 @@
             });
         });
 
+        // Number Counter
         const statsObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -428,6 +589,7 @@
                     const duration = 2000;
                     const step = target / (duration / 16);
                     let current = 0;
+                    
                     const updateCounter = () => {
                         current += step;
                         if(current < target) {
