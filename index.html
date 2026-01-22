@@ -244,6 +244,7 @@
             background: white; 
             border: 1px solid white;
             min-height: 450px;
+            margin-bottom: 3rem; /* Spacing between cards */
         }
         /* Mobile Stack Fix */
         @media (max-width: 850px) { .feat-card { grid-template-columns: 1fr; } .feat-img { min-height: 300px; } }
@@ -271,6 +272,37 @@
             border-color: var(--accent-primary); color: var(--accent-primary); 
             background: #eff6ff; transform: translateY(-2px);
         }
+
+        /* --- COLLAGE GRID (For 2nd Card) --- */
+        .collage-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 2px;
+            background: #fff;
+        }
+        .collage-img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .collage-img:hover { transform: scale(1.05); z-index: 2; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        
+        /* Updated List Block for English Text */
+        .list-block {
+            text-align: left; /* Changed from right */
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+
 
         /* --- TECH STACK (CENTERED) --- */
         .tech-grid { 
@@ -408,7 +440,7 @@
 
         <br><br><br><br>
 
-        <!-- FEATURED PROJECT -->
+        <!-- FEATURED PROJECT 1 (GAS) -->
         <div class="section-head reveal" id="projects">
             <h2>Major Deployments</h2>
         </div>
@@ -427,6 +459,49 @@
                     <span class="pill">Qalyubia</span>
                     <span class="pill">Alexandria</span>
                     <span class="pill">Upper Egypt</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FEATURED PROJECT 2 (INDUSTRIAL) -->
+        <div class="glass-card feat-card reveal tilt-card" style="margin-top: 4rem;">
+            <!-- COLLAGE IMAGE SIDE -->
+            <div class="card-img-container feat-img collage-grid">
+                <img src="https://i.ibb.co/RkGS3LNy/Whats-App-Image-2026-01-22-at-1-55-52-PM.jpg" class="collage-img" alt="Survey Site 1">
+                <img src="https://i.ibb.co/Kc9TQrjk/Whats-App-Image-2026-01-22-at-1-56-20-PM.jpg" class="collage-img" alt="Survey Site 2">
+                <img src="https://i.ibb.co/SXbC3g7f/Whats-App-Image-2026-01-22-at-1-58-22-PM.jpg" class="collage-img" alt="Survey Site 3">
+                <img src="https://i.ibb.co/wN9Kmbx5/Whats-App-Image-2026-01-22-at-1-58-58-PM.jpg" class="collage-img" alt="Survey Site 4">
+                <img src="https://i.ibb.co/JYQYqKF/Whats-App-Image-2026-01-22-at-1-59-25-PM.jpg" class="collage-img" alt="Survey Site 5">
+                <img src="https://i.ibb.co/5XmfSWTC/Whats-App-Image-2026-01-22-at-1-59-52-PM.jpg" class="collage-img" alt="Survey Site 6">
+            </div>
+            
+            <!-- CONTENT SIDE -->
+            <div class="feat-content">
+                <div class="feat-badge"><i data-lucide="factory" size="16"></i>Industrial Infrastructure</div>
+                <h3 class="card-title" style="font-size: 2.2rem; margin-bottom: 1.5rem;">Strategic Industrial Expansion</h3>
+                
+                <!-- English List Block -->
+                <div class="list-block">
+                    <div class="list-item">
+                        <i data-lucide="check-circle-2" size="18" style="color: var(--accent-primary); margin-top:5px; flex-shrink:0;"></i>
+                        <span>Surveying and staking works for the <strong>ELAB</strong> completion and expansion project in Alexandria.</span>
+                    </div>
+                    <div class="list-item">
+                        <i data-lucide="check-circle-2" size="18" style="color: var(--accent-primary); margin-top:5px; flex-shrink:0;"></i>
+                        <span>Engineering surveys for the design and construction of the <strong>Indorama</strong> Ammonia pipeline in Ain Sokhna.</span>
+                    </div>
+                    <div class="list-item">
+                        <i data-lucide="check-circle-2" size="18" style="color: var(--accent-primary); margin-top:5px; flex-shrink:0;"></i>
+                        <span>Survey support for the 4-inch pipeline construction within the Zafarana field development for <strong>PMS</strong>.</span>
+                    </div>
+                </div>
+                
+                <div class="project-list" style="justify-content: flex-start;"> 
+                    <span class="pill">ELAB</span>
+                    <span class="pill">Indorama</span>
+                    <span class="pill">PMS</span>
+                    <span class="pill">Ain Sokhna</span>
+                    <span class="pill">Zafarana</span>
                 </div>
             </div>
         </div>
@@ -609,5 +684,3 @@
     </script>
 </body>
 </html>
-
-
